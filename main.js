@@ -1,6 +1,23 @@
 //API key AIzaSyCDz9nTD3ZvX96FT3OjKUJxBdrE4CAAeyQ
+class Taxi {
+    constructor(lat, lng) {
+        this.lat1 = lat;
+        this.lng1 = lng;
+    }
+    set SetRandomLocation(location) {
+        let a = Number(Math.random().toFixed(5));
+        let b = Number(Math.random().toFixed(5));
+
+        this.lat1 = location.lat + a;
+        this.lng1 = location.lng + b;
+    }
+}
+
+
+
 
 let map;
+
 
 function initMap() {
 
@@ -11,6 +28,9 @@ function initMap() {
 }
 
 
+
+
+let taxi = new Taxi;
 
 function getLocation() {
     return new Promise((resolve, reject) => {
@@ -35,6 +55,20 @@ getLocation().then((coords) => {
         position: new google.maps.LatLng(coords.coords.latitude, coords.coords.longitude),
         icon: {
             url: 'img/marker.png',
+            //size: new google.maps.Size(32, 50)
+        },
+        map: map
+    });
+
+
+    //Taxi 
+    let loc = { lat: coords.coords.latitude, lng: coords.coords.longitude };
+    taxi.SetRandomLocation = loc;
+    console.log(taxi.lat1, taxi.lng1);
+    let markerTaxi = new google.maps.Marker({
+        position: new google.maps.LatLng(taxi.lat1, taxi.lng1),
+        icon: {
+            url: 'img/taxi.png',
             //size: new google.maps.Size(32, 50)
         },
         map: map
