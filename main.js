@@ -2,12 +2,13 @@
 
 let map;
 
-/*function initMap() {
+function initMap() {
     map = new google.maps.Map(document.getElementById('map'), {
         center: { lat: -34.397, lng: 150.644 },
         zoom: 8
     });
-}*/
+}
+
 function getLocation() {
     return new Promise((resolve, reject) => {
         if (navigator.geolocation) {
@@ -21,7 +22,7 @@ function getLocation() {
 }
 
 getLocation().then((coords) => {
-    console.log(coords);
+    //console.log(coords);
     const map = new google.maps.Map(document.getElementById('map'), {
         center: { lat: coords.coords.latitude, lng: coords.coords.longitude },
         zoom: 8
@@ -34,4 +35,6 @@ getLocation().then((coords) => {
         },
         map: map
     });
+
+
 })
