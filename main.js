@@ -31,7 +31,7 @@ getLocation().then((coords) => {
         zoom: 8
     });
 
-    new google.maps.Marker({
+    let marker = new google.maps.Marker({
         position: new google.maps.LatLng(coords.coords.latitude, coords.coords.longitude),
         icon: {
             url: 'img/marker.png',
@@ -40,12 +40,39 @@ getLocation().then((coords) => {
         map: map
     });
 
+
 })
 
+
+let markersArray = [];
+
 function getCenterLocation() {
+
     let c = map.getCenter();
-    /*console.log(c.lat());
-    console.log(c.lng());*/
+    let marker = new google.maps.Marker({
+        position: new google.maps.LatLng(c.lat(), c.lng()),
+        icon: {
+            // url: 'img/marker.png',
+            // size: new google.maps.Size(0, 0)
+        },
+        map: map
+    });
+    //удалили старые
+
+    for (var i = 0; i < markersArray.length; i++) {
+        markersArray[i].setMap(null);
+    }
+    markersArray = [];
+    markersArray.push(marker);
+
+
+
+    let infowindow = new google.maps.InfoWindow({
+
+        content: c.lat() + " : " + c.lng()
+    });
+    infowindow.open(map, markersArray[0]);
+
     return {
         lat: c.lat(),
         lng: c.lng()
