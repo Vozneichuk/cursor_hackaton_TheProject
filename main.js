@@ -44,7 +44,11 @@ getLocation().then((coords) => {
 
 function getCenterLocation() {
     let c = map.getCenter();
-    console.log(c.lat());
-    console.log(c.lng());
+    /*console.log(c.lat());
+    console.log(c.lng());*/
+    return {
+        lat: c.lat(),
+        lng: c.lng()
+    }
 }
-document.addEventListener("mouseup", getCenterLocation);
+document.addEventListener("mouseup", () => { console.log(getCenterLocation()); });
