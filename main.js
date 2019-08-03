@@ -1,12 +1,16 @@
 //API key AIzaSyCDz9nTD3ZvX96FT3OjKUJxBdrE4CAAeyQ
+function getRandomFloat(min, max) {
+    return Math.random() * (max - min) + min;
+}
 class Taxi {
     constructor(lat, lng) {
-        this.lat1 = lat;
-        this.lng1 = lng;
-    }
+            this.lat1 = lat;
+            this.lng1 = lng;
+        }
+        //сеттер для задавания рандомных позицый рядом с нашей локацией
     set SetRandomLocation(location) {
-        let a = Number(Math.random().toFixed(5));
-        let b = Number(Math.random().toFixed(5));
+        let a = Number(getRandomFloat(-1, 1).toFixed(5));
+        let b = Number(getRandomFloat(-1, 1).toFixed(5));
 
         this.lat1 = location.lat + a;
         this.lng1 = location.lng + b;
@@ -29,9 +33,13 @@ function initMap() {
 
 
 
-
+///Создала массив с таксишками!!!!
 let taxi = new Taxi;
-
+let taxiArray = [];
+for (let i = 0; i < 5; i++) {
+    taxiArray[i] = new Taxi;
+}
+////
 function getLocation() {
     return new Promise((resolve, reject) => {
         if (navigator.geolocation) {
@@ -46,23 +54,31 @@ function getLocation() {
 
 getLocation().then((coords) => {
 
-    map = new google.maps.Map(document.getElementById('map'), {
-        center: { lat: coords.coords.latitude, lng: coords.coords.longitude },
-        zoom: 8
-    });
+        map = new google.maps.Map(document.getElementById('map'), {
+            center: { lat: coords.coords.latitude, lng: coords.coords.longitude },
+            zoom: 8
+        });
 
-    let marker = new google.maps.Marker({
-        position: new google.maps.LatLng(coords.coords.latitude, coords.coords.longitude),
-        icon: {
-            url: 'img/marker.png',
-            //size: new google.maps.Size(32, 50)
-        },
-        map: map
-    });
+        let marker = new google.maps.Marker({
+            position: new google.maps.LatLng(coords.coords.latitude, coords.coords.longitude),
+            icon: {
+                url: 'img/marker.png',
+                //size: new google.maps.Size(32, 50)
+            },
+            map: map
+        });
 
 
-    //Taxi 
-    let loc = { lat: coords.coords.latitude, lng: coords.coords.longitude };
+        // Идем по всем такси и шпулим их на карту
+        let loc = { lat: coords.coords.latitude, lng: coords.coords.longitude };
+        taxiArray.forEach(taxi => {
+            generateTaxiOnMap(loc, taxi);
+        });
+
+
+    })
+    //делает маркер таксишку
+function generateTaxiOnMap(loc, taxi) {
     taxi.SetRandomLocation = loc;
     console.log(taxi.lat1, taxi.lng1);
     let markerTaxi = new google.maps.Marker({
@@ -74,9 +90,7 @@ getLocation().then((coords) => {
         map: map
     });
 
-
-})
-
+}
 
 let markersArray = [];
 
