@@ -46,3 +46,14 @@ input {
     box-sizing: border-box;
     margin: 5px;
 }
+
+.place {
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: url('img/place.png');
+    width: 100px;
+    height: 100px;
+}
