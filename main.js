@@ -1,10 +1,37 @@
 //API key AIzaSyCDz9nTD3ZvX96FT3OjKUJxBdrE4CAAeyQ
 
-var map;
+let map;
 
-function initMap() {
+/*function initMap() {
     map = new google.maps.Map(document.getElementById('map'), {
         center: { lat: -34.397, lng: 150.644 },
         zoom: 8
     });
+}*/
+function getLocation() {
+    return new Promise((resolve, reject) => {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition((coords) => {
+                resolve(coords);
+            });
+        } else {
+            reject("Geolocation is not supported by this browser.");
+        }
+    })
 }
+
+getLocation().then((coords) => {
+    console.log(coords);
+    const map = new google.maps.Map(document.getElementById('map'), {
+        center: { lat: coords.coords.latitude, lng: coords.coords.longitude },
+        zoom: 8
+    });
+    new google.maps.Marker({
+        position: new google.maps.LatLng(coords.coords.latitude, coords.coords.longitude),
+        icon: {
+            url: 'img/marker.png',
+            //size: new google.maps.Size(32, 50)
+        },
+        map: map
+    });
+})
